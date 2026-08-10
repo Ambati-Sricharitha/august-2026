@@ -1,0 +1,16 @@
+class Solution:
+    def maxTask(self, h: list[int], l: list[int]) -> int:
+        # code here
+        n=len(h)
+        no=0
+        low=l[0]
+        high=h[0]
+        for i in range(1,n):
+            new_no=max(no,low,high)
+            new_low=new_no+l[i]
+            new_high=no+h[i]
+            no=new_no
+            low=new_low
+            high=new_high
+        return max(no,low,high)
+        
