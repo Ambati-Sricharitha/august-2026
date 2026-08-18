@@ -1,0 +1,18 @@
+class Solution:
+    def largestInteger(self, nums: List[int], k: int) -> int:
+        res=-1
+        n=len(nums)
+        count=Counter(nums)
+        if k==1:
+            for i,c in count.items():
+                if c==1:
+                    res=max(res,i)
+        elif 1<k<n:
+            if count[nums[0]]==1:
+                res=max(res,nums[0])
+            if count[nums[-1]]==1:
+                res=max(res,nums[-1])
+        else:
+            res=max(nums)
+        return res
+        
