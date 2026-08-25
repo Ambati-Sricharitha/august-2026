@@ -1,0 +1,9 @@
+class Solution:
+    def smallestMissingMultiple(self, nums, k):
+        s = set(nums)
+        
+        x = k
+        while x in s:
+            x += k
+        
+        return x
