@@ -1,0 +1,33 @@
+class Solution:
+    def lexGreaterPermutation(self, s: str, target: str) -> str:
+        cnt = [0] * 26
+
+        for c in s:
+            cnt[ord(c) - 97] += 1
+
+        for i in range(len(target) - 1, -1, -1):
+            # Check if target prefix can be formed
+            temp = cnt[:]
+
+            for j in range(i):
+                x = ord(target[j]) - 97
+                temp[x] -= 1
+                if temp[x] < 0:
+                    break
+            else:
+                x = ord(target[i]) - 97
+
+                # Find smallest character greater than target[i]
+                for k in range(x + 1, 26):
+                    if temp[k] > 0:
+                        temp[k] -= 1
+
+                        ans = target[:i] + chr(k + 97)
+
+                        # Add remaining characters in sorted order
+                        for c in range(26):
+                            ans += chr(c + 97) * temp[c]
+
+                        return ans
+
+        return ""
