@@ -1,0 +1,54 @@
+from collections import deque
+
+class Solution:
+    def minMoves(self, classroom, energy):
+        m, n = len(classroom), len(classroom[0])
+        pos = {}
+        
+        for i in range(m):
+            for j in range(n):
+                if classroom[i][j] == 'S':
+                    sr, sc = i, j
+                elif classroom[i][j] == 'L':
+                    pos[(i, j)] = len(pos)
+
+        k = len(pos)
+        if k == 0:
+            return 0
+
+        full = (1 << k) - 1
+        q = deque([(sr, sc, energy, 0, 0)])
+        best = {(sr, sc, 0): energy}
+
+        for_moves = [(1,0),(-1,0),(0,1),(0,-1)]
+
+        while q:
+            r, c, e, mask, d = q.popleft()
+
+            for dr, dc in for_moves:
+                x, y = r + dr, c + dc
+
+                if not (0 <= x < m and 0 <= y < n):
+                    continue
+                if classroom[x][y] == 'X' or e == 0:
+                    continue
+
+                ne = e - 1
+                nm = mask
+
+                if (x, y) in pos:
+                    nm |= 1 << pos[(x, y)]
+
+                if classroom[x][y] == 'R':
+                    ne = energy
+
+                if nm == full:
+                    return d + 1
+
+                state = (x, y, nm)
+
+                if ne > best.get(state, -1):
+                    best[state] = ne
+                    q.append((x, y, ne, nm, d + 1))
+
+        return -1
